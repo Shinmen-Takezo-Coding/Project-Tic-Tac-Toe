@@ -1,0 +1,236 @@
+/* -----------------------------------------------------------
+   1. DESIGN SYSTEM
+   ----------------------------------------------------------- */
+:root {
+  /* Colors */
+  --bg-page: #080808;      
+  --bg-surface: #111111;   
+  --bg-elevated: #161616;  
+  --bg-hover: rgba(255, 255, 255, 0.05);
+  --bg-active: rgba(255, 255, 255, 0.08);
+  
+  --text-primary: #f7f7f7;   
+  --text-secondary: #b1b1b1; 
+  --text-muted: #717171;     
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Typography */
+  --fs-xs: 12px;
+  --fs-sm: 13px;
+  --fs-base: 14px;
+  --fs-lg: 16px;
+  --fs-xl: 20px;
+  --font-sans: "Inter", -apple-system, sans-serif;
+  
+  /* Component Specifics */
+  --input-bg: rgba(255, 255, 255, 0.05); 
+  --input-border: rgba(255, 255, 255, 0.1);
+  --input-focus-border: var(--brand-purple); 
+  --header-min-height: 160px;
+}
+
+/* -----------------------------------------------------------
+   2. GLOBAL & RESET
+   ----------------------------------------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 200px);
+  grid-template-rows: repeat(3, 200px);
+  
+  /* Use the gap + background trick to create the lines */
+  gap: 6px; 
+  background-color: var(--text-primary); /* This becomes your line color */
+  
+  border-radius: var(--space-2);
+}
+
+.cell {
+  background-color: var(--bg-page);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.scoreboard {
+    display: flex;
+    justify-content: space-around; /* Spreads the 3 boxes out */
+    width: 600px; /* Match your board width */
+    padding-top: 64px;
+    padding-bottom: 24px;
+}
+
+.label {
+    font-size: 16px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.value {
+    font-size: 32px;
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-8);
+    align-items: center;
+    font-size: var(--fs-xl);
+}
+
+/* -----------------------------------------------------------
+   BUTTON BASE STYLES
+   ----------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  padding: 0 var(--space-3);
+  height: 32px; /* Linear usually uses 32px or 36px */
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* -----------------------------------------------------------
+   SECONDARY BUTTON (Surface Style)
+   ----------------------------------------------------------- */
+.btn-secondary {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--input-border);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-hover);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:active {
+  background: var(--bg-active);
+  transform: translateY(1px);
+}
+
+
+.cell svg {
+    width: 85%;   /* Adjust this to change the "breathing room" */
+    height: 85%;
+    color: var(--text-primary); /* Inherits your primary white/off-white color */
+    pointer-events: none;      /* Ensures the click passes through to the div */
+    animation: popIn 0.1s ease-out forwards;
+    transform-origin: center;
+}
+
+/* Optional: Make the X a different color than the O */
+.icon-x {
+    color: var(--brand-purple); /* Or keep it white for that ultra-minimal look */
+    fill: var(--text-primary);
+}
+
+#restart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent; /* Or rgba(0,0,0,0.1) for a subtle dim */
+    z-index: 9999; /* Ensure it stays above everything */
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0.3); /* Start very small */
+        opacity: 1;            /* Invisible */
+    }
+    70% {
+        transform: scale(1.05); /* The "Overshoot" (I recommend 115% for a better snap) */
+        opacity: 1;            /* Fully visible */
+    }
+    100% {
+        transform: scale(1);    /* Settle at exactly 100% */
+    }
+}
+
+/* 1. Base state for the whole box (Dimmed) */
+.stat-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.4; /* Dims both the name and the number */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* 2. Base state for the text */
+.stat-box .label {
+    font-size: var(--fs-xs);
+    color: var(--text-muted); /* Darker text */
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.stat-box .value {
+    font-size: var(--fs-xl);
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
+/* 3. THE ACTIVE OVERRIDES (When JS adds the class) */
+.stat-box.active {
+    opacity: 1; /* Brightens the whole box */
+    transform: scale(1.05); /* Slight pop */
+}
+
+/* Makes the name text turn white when active */
+.stat-box.active .label {
+    color: var(--text-primary); 
+}
+
+/* Makes the Tie box entirely muted when it gets the .muted class */
+.stat-box.muted {
+    opacity: 0.2;
+}

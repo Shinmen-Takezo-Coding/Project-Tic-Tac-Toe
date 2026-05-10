@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <title>Tic Tac Toe</title>
+</head>
+<body>
+    
+    <div class="game-container">
+
+    <div id="game-board" class="board">
+        <!-- We will use 9 divs for the cells -->
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
+        <div class="cell" data-index="9"></div>
+    </div>
+
+    <div class="scoreboard">
+        <div class="stat-box p1-box">
+            <div class="label">PLAYER 1 (X)</div>
+            <div class="value" id="p1-score">0</div>
+        </div>
+        
+        <div class="stat-box tie-box">
+            <div class="label">TIE</div>
+            <div class="value" id="tie-score">0</div>
+        </div>
+        
+        <div class="stat-box p2-box">
+            <div class="label">PLAYER 2 (O)</div>
+            <div class="value" id="p2-score">0</div>
+        </div>
+    </div>
+
+    </div>
+    
+    <div id="restart-overlay" class="hidden"></div>
+
+</body>
+</html>
